@@ -1,4 +1,4 @@
-namespace WebApplication1.Models;
+namespace LabASP.NET.Models;
 
 public class ErrorViewModel
 {

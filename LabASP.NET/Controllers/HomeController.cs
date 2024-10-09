@@ -1,8 +1,8 @@
 using System.Diagnostics;
+using LabASP.NET.Models;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models;
 
-namespace WebApplication1.Controllers;
+namespace LabASP.NET.Controllers;
 
 public class HomeController : Controller
 {
@@ -37,13 +37,10 @@ public class HomeController : Controller
     }
     public IActionResult Age(DateTime birth, DateTime future)
     {
-        //Future pozniejsze od birth
-        ViewBag.birth = birth;
-        ViewBag.future = future;
-
-
+        ViewBag.birth = birth.ToString("yyyy-MM-dd");
+        ViewBag.future = future.ToString("yyyy-MM-dd");
         
-        if (birth >  future)
+        if (future < birth)
         {
             ViewBag.ErrorMessage = "Niepoprawna data!";
             return View("CustomError");
@@ -51,12 +48,11 @@ public class HomeController : Controller
 
         int age = future.Year - birth.Year;
 
-        if (birth.Month < future.Month)
-            age--;
-        else if(birth.Day < future.Day)
+        if (future.Month < birth.Month || (future.Month == birth.Month && future.Day < birth.Day))
         {
             age--;
         }
+
 
         ViewBag.Result = age;
 
