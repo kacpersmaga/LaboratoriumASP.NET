@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using LabASP.NET.Models;
+using Lab.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LabASP.NET.Controllers;
+namespace Lab.Controllers;
 
 public class HomeController : Controller
 {
@@ -59,7 +59,7 @@ public class HomeController : Controller
         return View();
     }
     
-    public IActionResult Calculator(Operator? op, double? a, double? b)
+    public IActionResult Calculator(Operators? op, double? a, double? b)
     {
         // var op = Request.Query["op"];
         // var a = double.Parse(Request.Query["a"]);
@@ -80,19 +80,19 @@ public class HomeController : Controller
         ViewBag.Operator = op;
         switch (op)
         {
-            case Operator.Add:
+            case Operators.Add:
                 ViewBag.Result = a + b;
                 ViewBag.Operator = "+";
                 break;
-            case Operator.Sub :
+            case Operators.Sub :
                 ViewBag.Result = a - b;
                 ViewBag.Operator = "-";
                 break;
-            case Operator.Div:
+            case Operators.Div:
                 ViewBag.Result = a / b;
                 ViewBag.Operator = ":";
                 break;
-            case Operator.Mul:
+            case Operators.Mul:
                 ViewBag.Result = a * b;
                 ViewBag.Operator = "*";
                 break;
@@ -114,7 +114,7 @@ public class HomeController : Controller
     }
 }
 
-public enum Operator
+public enum Operators
 {
     Add, Sub, Mul, Div
 }
