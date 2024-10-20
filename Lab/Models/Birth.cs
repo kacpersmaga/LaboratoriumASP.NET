@@ -2,44 +2,23 @@ namespace Lab.Models;
 
 public class Birth
 {
-    public DateTime dateOfBirth { get; set; }
-    public DateTime dateFuture { get; set; }
-    private int _age;
-    public string? name { get; set; }
-    public int age
+    public string FirstName { get; set; }
+    public DateTime BirthDate { get; set; }
+
+    public int CalculateAge()
     {
-        get
+        var age = DateTime.Now.Year - BirthDate.Year;
+        if (DateTime.Now.Month < BirthDate.Month || (DateTime.Now.Month == BirthDate.Month && DateTime.Now.Day < BirthDate.Day))
         {
-            _age = Age();
-            return _age;
+            age--;
         }
-        set
-        {
-            _age = value;
-        }
+        return age;
     }
+
     public bool IsValid()
     {
-        if(name != null && dateOfBirth < DateTime.Now && dateFuture > DateTime.Now)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return BirthDate < DateTime.Now && FirstName != null;
     }
-    public int Age() 
-    {
-        int a = Convert.ToInt32(dateFuture.Year - dateOfBirth.Year);
-        if (dateOfBirth.Month > dateFuture.Month) 
-        {
-            a--;
-            return a;
-        }
-        else
-        {
-            return a;
-        }
-    }
+    
+    public string FormattedBirthDate => BirthDate.ToString("dd.MM.yyyy");
 }

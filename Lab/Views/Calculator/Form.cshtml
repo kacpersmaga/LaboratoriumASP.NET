@@ -4,10 +4,11 @@
             <h2>Kalkulator</h2>
             <form action="Result" method="POST">
                 <div class="mb-3">
-                    <label class="form-label" for="a">Liczba 1</label>
-                    <input class="form-control" type="number" name="a" step="0.00001" id="x"/>
+                    <label class="form-label" for="A">Liczba 1</label>
+                    <input class="form-control" type="number" name="A" step="0.00001" id="a"/>
                 </div>
                 <div class="mb-3">
+                    <label class="form-label" for="operator">Operator</label>
                     <select name="operator">
                         <option value="add">+</option>
                         <option value="sub">&minus;</option>
@@ -16,8 +17,8 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="b">Liczba 2</label>
-                    <input class="form-control" type="number" name="b" step="0.00001" id="y"/>
+                    <label class="form-label" for="B">Liczba 2</label>
+                    <input class="form-control" type="number" name="B" step="0.00001" id="b"/>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary" type="submit">Oblicz</button>
