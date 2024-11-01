@@ -54,7 +54,7 @@ public class ContactController : Controller
     // Lista kontaktów
     public IActionResult Index()
     {
-        return View(_contacts);
+        return View(_contacts.Values.ToList());
     }
     
     // Formularz dodania kontaktu
@@ -74,13 +74,13 @@ public class ContactController : Controller
 
         model.Id = ++currentId;
         _contacts.Add(model.Id, model);
-        return View("Index", _contacts);
+        return View("Index", _contacts.Values.ToList());
     }
 
     public IActionResult Delete(int id)
     {
         _contacts.Remove(id);
-        return View("Index", _contacts);
+        return View("Index", _contacts.Values.ToList());
     }
     
 
