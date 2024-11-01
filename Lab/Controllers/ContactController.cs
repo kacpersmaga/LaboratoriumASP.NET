@@ -6,6 +6,13 @@ namespace Lab.Controllers;
 
 public class ContactController : Controller
 {
+    private readonly IContactService _contactService;
+
+    public ContactController(IContactService contactService)
+    {
+        _contactService = contactService;
+    }
+    
     private static Dictionary<int, ContactModel> _contacts = new()
     {
         {
@@ -49,12 +56,12 @@ public class ContactController : Controller
         }
 
     };
-
+    
     private static int currentId = 3;
     // Lista kontaktów
     public IActionResult Index()
     {
-        return View(_contacts.Values.ToList());
+        return View(_contactService.FindAll());
     }
     
     // Formularz dodania kontaktu
@@ -72,15 +79,14 @@ public class ContactController : Controller
             return View(model);
         }
 
-        model.Id = ++currentId;
-        _contacts.Add(model.Id, model);
-        return View("Index", _contacts.Values.ToList());
+        _contactService.Add(model);
+        return RedirectToAction("Index");
     }
 
     public IActionResult Delete(int id)
     {
-        _contacts.Remove(id);
-        return View("Index", _contacts.Values.ToList());
+        _contactService.Delete(id);
+        return RedirectToAction("Index");
     }
     
 
@@ -89,37 +95,35 @@ public class ContactController : Controller
     [HttpGet]
     public IActionResult Edit(int id)
     {
-    
-        if (_contacts.Keys.Contains(id))
-        {
-            return View(_contacts[id]);
-        }
-        else
+        var contact = _contactService.FindById(id);
+        if (contact == null)
         {
             return NotFound();
-        };
+        }
+
+        return View(contact);
     }
     
     [HttpPost]
-    public IActionResult Edit(ContactModel contact) 
+    public IActionResult Edit(ContactModel contact)
     {
-        if (ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
-            _contacts[contact.Id] = contact;
-            return RedirectToAction("Index");
+            return View(contact);
         }
-        else
-        {
-            return View();
-        }
+
+        _contactService.Update(contact);
+        return RedirectToAction("Index");
     }
     
     public IActionResult Details(int id)
     {
-        if (_contacts.ContainsKey(id))
+        var contact = _contactService.FindById(id); 
+        if (contact == null)
         {
-            return View(_contacts[id]);
+            return NotFound();
         }
-        return NotFound();
+
+        return View(contact);
     }
 }

@@ -40,7 +40,7 @@
             @Model.BirthDate.ToString("dd/MM/yyyy")
         </td>
         <td style="padding-left:20px">
-            @Model.Category
+            @Model.Category.GetDisplayName()
         </td>
         <td>
             <a class="btn btn-primary"
@@ -52,6 +52,9 @@
                asp-controller="Contact"
                asp-route-id=@Model.Id
                onclick="return confirm('Czy na pewno chcesz usunąć ten kontakt?');">Usuń</a>
+            <a class="btn btn-primary"
+               asp-action="Index"
+               asp-controller="Contact">Powróć</a>
         </td>
     </tr>
 
