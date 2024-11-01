@@ -32,9 +32,19 @@
             </td>
             <td>
                 <div>
-                    <a>Edycja</a>
-                    <a>Szczegóły</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id=@entry.Value.Id>Usuń</a>
+                    <a class="btn btn-primary"
+                       asp-action="Edit"
+                       asp-controller="Contact"
+                       asp-route-id=@entry.Value.Id>Edytuj</a>
+                    <a class="btn btn-primary"
+                       asp-action="Details"
+                       asp-controller="Contact"
+                       asp-route-id=@entry.Value.Id>Szczegóły</a>
+                    <a class="btn btn-primary"
+                       asp-action="Delete"
+                       asp-controller="Contact"
+                       asp-route-id=@entry.Value.Id
+                       onclick="return confirm('Czy na pewno chcesz usunąć ten kontakt?');">Usuń</a>
                 </div>
             </td>
         </tr>

@@ -1,0 +1,58 @@
+@model ContactModel
+
+<h2>Szczegóły</h2>
+<table>
+    <tr>
+        <th style="padding-left:20px">
+            Imie
+        </th>
+        <th style="padding-left:20px">
+            Nazwisko
+        </th>
+        <th style="padding-left:20px">
+            Numer telefonu
+        </th>
+        <th style="padding-left:20px">
+            Email
+        </th>
+        <th style="padding-left:20px">
+            Data urodzin
+        </th>
+        <th style="padding-left:20px">
+            Kategoria
+        </th>
+    </tr>
+
+    <tr>
+        <td style="padding-left:20px">
+            @Model.FirstName
+        </td>
+        <td style="padding-left:20px">
+            @Model.LastName
+        </td>
+        <td style="padding-left:20px">
+            @Model.PhoneNumber
+        </td>
+        <td style="padding-left:20px">
+            @Model.Email
+        </td>
+        <td style="padding-left:20px">
+            @Model.BirthDate.ToString("dd/MM/yyyy")
+        </td>
+        <td style="padding-left:20px">
+            @Model.Category
+        </td>
+        <td>
+            <a class="btn btn-primary"
+               asp-action="Edit"
+               asp-controller="Contact"
+               asp-route-id=@Model.Id>Edytuj</a>
+            <a class="btn btn-primary"
+               asp-action="Delete"
+               asp-controller="Contact"
+               asp-route-id=@Model.Id
+               onclick="return confirm('Czy na pewno chcesz usunąć ten kontakt?');">Usuń</a>
+        </td>
+    </tr>
+
+</table>

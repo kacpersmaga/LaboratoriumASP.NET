@@ -1,19 +1,19 @@
 @model ContactModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+ViewBag.Title = "title";
+Layout = "_Layout";
 }
 
 <h2>Dodaj kontakt</h2>
 <div>
-    <form asp-action="Add" method="post">
+    <form asp-action="Edit" method="post">
         <div class="mb-3">
             <label class="form-label" asp-for="FirstName">Imię</label>
             <input class="form-control" asp-for="FirstName"/>
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
-        
+
         <div class="mb-3">
             <label class="form-label" asp-for="LastName">Nazwisko</label>
             <input class="form-control" asp-for="LastName"/>
@@ -43,7 +43,7 @@
             <select class="form-control" asp-for="Category" asp-items="@Html.GetEnumSelectList<Category>()"></select>
             <span asp-validation-for="Category" class="text-danger"></span>
         </div>
-        
+
         <button type="submit" class="btn btn-primary">Zapisz</button>
     </form>
 </div>

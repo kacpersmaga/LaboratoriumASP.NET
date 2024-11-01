@@ -25,7 +25,9 @@ public class ContactModel
     public DateOnly BirthDate { get; set; }
     
     [Phone]
-    [RegularExpression(pattern:"\\d\\d \\d\\d\\d \\d\\d\\d \\d\\d\\d", ErrorMessage = "Wpisz numer wg wzoru: +xx: xxx xxx xx")]
+    [RegularExpression(pattern: @"\+\d{2} \d{3} \d{3} \d{3}", ErrorMessage = "Wpisz numer wg wzoru: +xx xxx xxx xxx")]
     public string PhoneNumber { get; set; }
+
+    public Category Category { get; set; }
     
 }
