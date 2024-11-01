@@ -13,52 +13,6 @@ public class ContactController : Controller
         _contactService = contactService;
     }
     
-    private static Dictionary<int, ContactModel> _contacts = new()
-    {
-        {
-            1, new ContactModel() 
-            {
-                Id = 1, 
-                FirstName = "Adam", 
-                LastName = "Abecki", 
-                Email = "adam@wsei.edu.pl", 
-                BirthDate = new DateOnly(2000, 10, 10), 
-                PhoneNumber = "+48 222 222 333",
-                Category = Category.Family
-            }
-            
-        },
-        {
-            2, new ContactModel()
-            {
-                Id = 1, 
-                FirstName = "Ewa", 
-                LastName = "Bębecka", 
-                Email = "ewa@wsei.edu.pl", 
-                BirthDate = new DateOnly(2001, 11, 12), 
-                PhoneNumber = "+48 321 123 333",
-                Category = Category.Friend
-            }
-            
-        },
-        {
-            3, new ContactModel()
-            {
-                Id = 1, 
-                FirstName = "Jakub", 
-                LastName = "Abecki", 
-                Email = "jakub@wsei.edu.pl", 
-                BirthDate = new DateOnly(2005, 2, 15), 
-                PhoneNumber = "+48 421 112 555",
-                Category = Category.Business
-            }
-            
-        }
-
-    };
-    
-    private static int currentId = 3;
-    // Lista kontaktów
     public IActionResult Index()
     {
         return View(_contactService.FindAll());

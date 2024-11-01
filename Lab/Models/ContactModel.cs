@@ -38,4 +38,7 @@ public class ContactModel
     [Display(Name = "Kategoria")]
     public Category Category { get; set; }
     
+    [HiddenInput]
+    public DateTime Created { get; set; }
+    
 }
