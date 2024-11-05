@@ -4,8 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AppDbContext>();
 
-builder.Services.AddSingleton<IContactService, MemoryContactService>();
+builder.Services.AddTransient<IContactService, EFContactService>();
 builder.Services.AddSingleton<IDateTimeProvider, CurrentDateTimeProvider>();
 
 var app = builder.Build();
