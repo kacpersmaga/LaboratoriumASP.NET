@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<ContactEntity> Contacts { get; set; }
         public DbSet<OrganizationEntity> Organizations { get; set; }
@@ -23,6 +25,79 @@ namespace Lab.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
+            string ADMIN_ID = Guid.NewGuid().ToString();
+            string ADMIN_ROLE_ID = Guid.NewGuid().ToString();
+            
+            string USER_ID = Guid.NewGuid().ToString();
+            string USER_ROLE_ID = Guid.NewGuid().ToString();
+
+
+            // dodanie roli administratora
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Name = "admin",
+                    NormalizedName = "ADMIN",
+                    Id = ADMIN_ROLE_ID,
+                    ConcurrencyStamp = ADMIN_ROLE_ID
+                },
+                new IdentityRole
+                {
+                    Name = "user",
+                    NormalizedName = "USER",
+                    Id = USER_ROLE_ID,
+                    ConcurrencyStamp = USER_ROLE_ID
+                }
+            );
+
+            // utworzenie administratora jako użytkownika
+            var admin = new IdentityUser
+            {
+                Id = ADMIN_ID,
+                Email = "adam@wsei.edu.pl",
+                EmailConfirmed = true,
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                NormalizedEmail = "ADAM@WSEI.EDU.PL"
+            };
+            
+            var user = new IdentityUser
+            {
+                Id = USER_ID,
+                Email = "damian@wsei.edu.pl",
+                EmailConfirmed = true,
+                UserName = "user",
+                NormalizedUserName = "USER",
+                NormalizedEmail = "DAMIAN@WSEI.EDU.PL"
+            };
+
+            // haszowanie hasła, najlepiej wykonać to poza programem i zapisać gotowy
+            // PasswordHash
+            PasswordHasher<IdentityUser> ph = new PasswordHasher<IdentityUser>();
+            admin.PasswordHash = ph.HashPassword(admin, "1234abcd!@#$ABCD");
+            user.PasswordHash = ph.HashPassword(user, "abcde1234!@#$ABCD");
+
+            // zapisanie użytkownika
+            modelBuilder.Entity<IdentityUser>().HasData(admin);
+            modelBuilder.Entity<IdentityUser>().HasData(user);
+
+            // przypisanie roli administratora użytkownikowi
+            modelBuilder.Entity<IdentityUserRole<string>>()
+                .HasData(new IdentityUserRole<string>
+                {
+                    RoleId = ADMIN_ROLE_ID,
+                    UserId = ADMIN_ID
+                });
+            
+            modelBuilder.Entity<IdentityUserRole<string>>()
+                .HasData(new IdentityUserRole<string>
+                {
+                    RoleId = USER_ROLE_ID,
+                    UserId = USER_ID
+                });
+            
             modelBuilder.Entity<ContactEntity>()
                 .HasOne(e => e.Organization)
                 .WithMany(o => o.Contacts)

@@ -1,19 +1,22 @@
 using System.Collections.Concurrent;
 using Lab.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Lab.Controllers;
 
+[Authorize(Roles = "admin")]
 public class ContactController : Controller
 {
     private readonly IContactService _contactService;
-
+    
     public ContactController(IContactService contactService)
     {
         _contactService = contactService;
     }
     
+    [AllowAnonymous]
     public IActionResult Index()
     {
         return View(_contactService.FindAll());
