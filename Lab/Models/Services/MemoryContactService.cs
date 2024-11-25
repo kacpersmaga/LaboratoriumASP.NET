@@ -37,4 +37,14 @@ public class MemoryContactService : IContactService
     {
         _items[item.Id] = item;
     }
+    
+    public List<OrganizationEntity> FindAllOrganizations()
+    {
+        throw new NotImplementedException();
+    }
+    
+    public OrganizationEntity? FindOrganizationById(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

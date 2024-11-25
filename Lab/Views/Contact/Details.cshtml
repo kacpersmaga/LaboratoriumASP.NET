@@ -21,6 +21,9 @@
         <th style="padding-left:20px">
             Kategoria
         </th>
+        <th style="padding-left:20px">
+            Organizacja
+        </th>
     </tr>
 
     <tr>
@@ -41,6 +44,9 @@
         </td>
         <td style="padding-left:20px">
             @Model.Category.GetDisplayName()
+        </td>
+        <td style="padding-left:20px">
+            @ViewBag.Organization
         </td>
         <td>
             <a class="btn btn-primary"

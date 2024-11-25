@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace Lab.Models;
 
 public class ContactMapper
@@ -13,6 +15,9 @@ public class ContactMapper
             PhoneNumber = model.PhoneNumber,
             Email = model.Email,
             Category = model.Category,
+            Created = model.Created,
+            OrganizationId = model.OrganizationId,
+            Organization = model.Organization
         };
     }
 
@@ -27,6 +32,9 @@ public class ContactMapper
             PhoneNumber = entity.PhoneNumber,
             Email = entity.Email,
             Category = entity.Category,
+            Created = entity.Created,
+            OrganizationId = entity.OrganizationId,
+            Organization = entity.Organization
         };
     }
 }

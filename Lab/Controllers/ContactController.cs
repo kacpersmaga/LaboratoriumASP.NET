@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using Lab.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Lab.Controllers;
 
@@ -21,7 +22,9 @@ public class ContactController : Controller
     // Formularz dodania kontaktu
     public IActionResult Add()
     {
-        return View();
+        ContactModel model = new ContactModel();
+        InitializeOrganizations(model);  
+        return View(model);
     }
     
     // Odebranie i zapisanie nowego kontaktu
@@ -30,6 +33,7 @@ public class ContactController : Controller
     {
         if (!ModelState.IsValid)
         {
+            InitializeOrganizations(model);
             return View(model);
         }
 
@@ -54,7 +58,8 @@ public class ContactController : Controller
         {
             return NotFound();
         }
-
+        
+        InitializeOrganizations(contact);
         return View(contact);
     }
     
@@ -63,6 +68,7 @@ public class ContactController : Controller
     {
         if (!ModelState.IsValid)
         {
+            InitializeOrganizations(contact);
             return View(contact);
         }
 
@@ -72,12 +78,23 @@ public class ContactController : Controller
     
     public IActionResult Details(int id)
     {
-        var contact = _contactService.FindById(id); 
+        var contact = _contactService.FindById(id);
         if (contact == null)
         {
             return NotFound();
         }
 
+        var organization = _contactService.FindOrganizationById(contact.OrganizationId);
+        ViewBag.Organization = organization?.Title;
+
         return View(contact);
+    }
+    
+    private void InitializeOrganizations(ContactModel model)
+    {
+        model.Organizations = _contactService
+            .FindAllOrganizations()
+            .Select(o => new SelectListItem() { Value = o.Id.ToString(), Text = o.Title })
+            .ToList();
     }
 }

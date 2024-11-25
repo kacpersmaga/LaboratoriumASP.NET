@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Lab.Models;
 
@@ -28,7 +30,7 @@ public class ContactModel
     
     [DataType(DataType.Date)]
     [Display(Name = "Data urodzin")]
-    public DateOnly BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
     
     [Phone]
     [Display(Name = "Numer telefonu")]
@@ -40,5 +42,15 @@ public class ContactModel
     
     [HiddenInput]
     public DateTime Created { get; set; }
+    
+
+    [Display(Name = "Organizacja")]
+    public int OrganizationId { get; set; }
+    
+
+    public OrganizationEntity? Organization { get; set; }
+
+    [ValidateNever]
+    public List<SelectListItem> Organizations{ get; set; }
     
 }
