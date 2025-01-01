@@ -7,12 +7,12 @@ var connectionString = builder.Configuration.GetConnectionString("MoviesContextC
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
-
 builder.Services.AddDbContext<MoviesContext>(options =>
 {
     options.UseSqlite(connectionString);
 });
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
