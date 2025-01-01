@@ -92,5 +92,39 @@ namespace ProjektZaliczeniowy.Controllers
             return View(movies);
         }
         
+        public async Task<IActionResult> ManageKeywords(int movieId, int companyId)
+        {
+            var movie = await _context.Movies
+                .Where(m => m.MovieId == movieId)
+                .Select(m => new
+                {
+                    m.Title
+                })
+                .FirstOrDefaultAsync();
+
+            if (movie == null) return NotFound();
+            
+            var keywords = await _context.MovieKeywords
+                .Where(mk => mk.MovieId == movieId)
+                .Join(
+                    _context.Keywords,
+                    mk => mk.KeywordId,
+                    k => k.KeywordId,
+                    (mk, k) => k.KeywordName
+                )
+                .ToListAsync();
+            
+            var viewModel = new MovieKeywordViewModel
+            {
+                MovieId = movieId,
+                Title = movie.Title,
+                Keywords = keywords,
+                CompanyId = companyId,
+                NewKeyword = string.Empty
+            };
+
+            return View(viewModel);
+        }
+        
     }
 }
