@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +93,7 @@ namespace ProjektZaliczeniowy.Controllers
             return View(movies);
         }
         
+        [Authorize]
         public async Task<IActionResult> ManageKeywords(int movieId, int companyId)
         {
             var movie = await _context.Movies
@@ -128,6 +130,7 @@ namespace ProjektZaliczeniowy.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> AddKeyword(MovieKeywordViewModel model)
         {
             if (!string.IsNullOrWhiteSpace(model.NewKeyword))
