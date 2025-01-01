@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ProjektZaliczeniowy.Models.Movies;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MoviesContextConnection") ?? throw new InvalidOperationException("Connection string 'MoviesContextConnection' not found.");
 
@@ -5,6 +8,11 @@ var connectionString = builder.Configuration.GetConnectionString("MoviesContextC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+builder.Services.AddDbContext<MoviesContext>(options =>
+{
+    options.UseSqlite(connectionString);
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
