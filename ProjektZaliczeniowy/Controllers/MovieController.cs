@@ -126,5 +126,42 @@ namespace ProjektZaliczeniowy.Controllers
             return View(viewModel);
         }
         
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddKeyword(MovieKeywordViewModel model)
+        {
+            if (!string.IsNullOrWhiteSpace(model.NewKeyword))
+            {
+                var existingKeyword = await _context.Keywords
+                    .FirstOrDefaultAsync(k => k.KeywordName == model.NewKeyword);
+                
+                if (existingKeyword == null)
+                {
+                    existingKeyword = new Keyword
+                    {
+                        KeywordId = _context.Keywords.Any() ? _context.Keywords.Max(k => k.KeywordId) + 1 : 1,
+                        KeywordName = model.NewKeyword
+                    };
+                    _context.Keywords.Add(existingKeyword);
+                    await _context.SaveChangesAsync();
+                }
+                
+                var movieKeyword = new MovieKeyword
+                {
+                    MovieId = model.MovieId,
+                    KeywordId = existingKeyword.KeywordId
+                };
+
+                if (!await _context.MovieKeywords.AnyAsync(
+                        mk => mk.MovieId == movieKeyword.MovieId && mk.KeywordId == movieKeyword.KeywordId))
+                {
+                    _context.MovieKeywords.Add(movieKeyword);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            
+            return RedirectToAction(nameof(ManageKeywords), new { movieId = model.MovieId, companyId = model.CompanyId });
+        }
+        
     }
 }

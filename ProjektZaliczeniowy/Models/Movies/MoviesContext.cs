@@ -308,7 +308,9 @@ public partial class MoviesContext : DbContext
         modelBuilder.Entity<MovieKeyword>(entity =>
         {
             entity
-                .HasNoKey()
+                .HasKey(mk => new { mk.MovieId, mk.KeywordId });
+            
+            entity
                 .ToTable("movie_keywords");
 
             entity.Property(e => e.KeywordId)
