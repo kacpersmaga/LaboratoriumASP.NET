@@ -50,5 +50,47 @@ namespace ProjektZaliczeniowy.Controllers
             ));
         }
         
+        public async Task<IActionResult> MoviesByCompany(int companyId)
+        {
+            var movies = await _context.MovieCompanies
+                .Where(mc => mc.CompanyId == companyId)
+                .Join(
+                    _context.Movies,
+                    mc => mc.MovieId,
+                    m => m.MovieId,
+                    (mc, m) => new
+                    {
+                        m.MovieId,
+                        m.Title,
+                        m.Popularity,
+                        m.Revenue,
+                        m.Runtime,
+                        m.VoteAverage,
+                        m.VoteCount
+                    }
+                )
+                .Select(m => new MovieViewModel
+                {
+                    MovieId = m.MovieId,
+                    Title = m.Title,
+                    Popularity = m.Popularity,
+                    Revenue = m.Revenue,
+                    Runtime = m.Runtime,
+                    VoteAverage = m.VoteAverage,
+                    VoteCount = m.VoteCount
+                })
+                .ToListAsync();
+
+            var companyName = await _context.ProductionCompanies
+                .Where(c => c.CompanyId == companyId)
+                .Select(c => c.CompanyName)
+                .FirstOrDefaultAsync();
+
+            ViewBag.CompanyName = companyName;
+            ViewBag.CompanyId = companyId;
+
+            return View(movies);
+        }
+        
     }
 }
