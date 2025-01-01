@@ -1,4 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("MoviesContextConnection") ?? throw new InvalidOperationException("Connection string 'MoviesContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
