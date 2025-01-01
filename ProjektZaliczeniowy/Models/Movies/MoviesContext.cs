@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProjektZaliczeniowy.Models.Movies;
 
-public partial class MoviesContext : DbContext
+public partial class MoviesContext : IdentityDbContext<IdentityUser>
 {
     public MoviesContext()
     {
@@ -52,6 +54,91 @@ public partial class MoviesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+            
+        string ADMIN_ID = Guid.NewGuid().ToString();
+        string ADMIN_ROLE_ID = Guid.NewGuid().ToString();
+        
+        string USER_ID = Guid.NewGuid().ToString();
+        string USER_ROLE_ID = Guid.NewGuid().ToString();
+
+        
+        modelBuilder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Name = "admin",
+                NormalizedName = "ADMIN",
+                Id = ADMIN_ROLE_ID,
+                ConcurrencyStamp = ADMIN_ROLE_ID
+            },
+            new IdentityRole
+            {
+                Name = "user",
+                NormalizedName = "USER",
+                Id = USER_ROLE_ID,
+                ConcurrencyStamp = USER_ROLE_ID
+            }
+        );
+        
+        var admin = new IdentityUser
+        {
+            Id = ADMIN_ID,
+            Email = "adam@wsei.edu.pl",
+            EmailConfirmed = true,
+            UserName = "admin",
+            NormalizedUserName = "ADMIN",
+            NormalizedEmail = "ADAM@WSEI.EDU.PL"
+        };
+        
+        var user = new IdentityUser
+        {
+            Id = USER_ID,
+            Email = "damian@wsei.edu.pl",
+            EmailConfirmed = true,
+            UserName = "user",
+            NormalizedUserName = "USER",
+            NormalizedEmail = "DAMIAN@WSEI.EDU.PL"
+        };
+        
+        PasswordHasher<IdentityUser> ph = new PasswordHasher<IdentityUser>();
+        admin.PasswordHash = ph.HashPassword(admin, "1234abcd!@#$ABCD");
+        user.PasswordHash = ph.HashPassword(user, "abcde1234!@#$ABCD");
+        
+        modelBuilder.Entity<IdentityUser>().HasData(admin);
+        modelBuilder.Entity<IdentityUser>().HasData(user);
+        
+        modelBuilder.Entity<IdentityUserRole<string>>()
+            .HasData(new IdentityUserRole<string>
+            {
+                RoleId = ADMIN_ROLE_ID,
+                UserId = ADMIN_ID
+            });
+        
+        modelBuilder.Entity<IdentityUserRole<string>>()
+            .HasData(new IdentityUserRole<string>
+            {
+                RoleId = USER_ROLE_ID,
+                UserId = USER_ID
+            });
+        
+        modelBuilder.Entity<Country>().ToTable("country", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Department>().ToTable("department", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Gender>().ToTable("gender", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Genre>().ToTable("genre", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Keyword>().ToTable("keyword", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Language>().ToTable("language", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<LanguageRole>().ToTable("language_role", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Movie>().ToTable("movie", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MovieCast>().ToTable("movie_cast", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MovieCompany>().ToTable("movie_company", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MovieCrew>().ToTable("movie_crew", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MovieGenre>().ToTable("movie_genres", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MovieKeyword>().ToTable("movie_keywords", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MovieLanguage>().ToTable("movie_languages", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Person>().ToTable("person", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<ProductionCompany>().ToTable("production_company", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<ProductionCountry>().ToTable("production_country", t => t.ExcludeFromMigrations());
+        
         modelBuilder.Entity<Country>(entity =>
         {
             entity.ToTable("country");
