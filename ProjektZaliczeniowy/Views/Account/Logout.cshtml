@@ -1,0 +1,13 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Logout";
+}
+
+<div class="text-center">
+    <h2>You are about to logout.</h2>
+    <p>Select "Logout" to confirm.</p>
+
+    <form asp-action="LogoutPost" method="post">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</div>
