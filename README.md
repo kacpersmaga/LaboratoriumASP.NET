@@ -12,7 +12,7 @@
 
 ## Project Overview
 
-This project is a **Movie Management Application** built using the Model-View-Controller (MVC) architecture in .NET. The purpose of this project is to implement a system for managing production companies, their movies, and associated keywords. The application includes user authentication and role-based access control.
+This project is a **Movie Management Application** built using the Model-View-Controller (MVC) architecture in .NET. The purpose of this project is to implement a system for managing production companies, their movies, and associated keywords. The application includes user authentication.
 
 The entire project is located in the `ProjektZaliczeniowy` folder. Users must navigate to this folder to access the main functionality.
 
@@ -30,10 +30,9 @@ The entire project is located in the `ProjektZaliczeniowy` folder. Users must na
    - Add keywords to a movie.
    - View the list of associated keywords.
    - Only authenticated users can manage keywords.
-4. **Authentication and Authorization**:
-   - Role-based access control using ASP.NET Identity.
-   - Two roles: `Admin` and `User`.
-   - Only authenticated users can add keywords.
+4. **Authentication**:
+   - Cookie-based login system for user authentication.
+   - Only logged-in users can add keywords.
 5. **Pagination**:
    - Paginated views for production companies.
    - Custom pagination logic implemented using `PagingListAsync`.
@@ -44,7 +43,7 @@ The entire project is located in the `ProjektZaliczeniowy` folder. Users must na
 
 1. **Backend**: ASP.NET Core MVC
 2. **Database**: SQLite
-3. **Authentication**: ASP.NET Identity
+3. **Authentication**: Cookie-based login system
 4. **Programming Language**: C#
 
 ---
@@ -67,15 +66,7 @@ The entire project is located in the `ProjektZaliczeniowy` folder. Users must na
 2. Ensure you are on the `main` branch (the default branch).
 3. Open the solution in Visual Studio.
 4. Build the solution to restore NuGet packages.
-5. If the migration for configuring roles and users is not already created, add it:
-   ```bash
-   dotnet ef migrations add InitialCreate
-   ```
-6. Update the database:
-   ```bash
-   dotnet ef database update
-   ```
-7. Run the project:
+5. Run the project:
    ```bash
    dotnet run
    ```
@@ -87,18 +78,13 @@ The entire project is located in the `ProjektZaliczeniowy` folder. Users must na
 1. Navigate to the `Production Companies` section to view all companies.
 2. Click on the number of movies for a company to view its movies.
 3. Logged-in users can manage keywords for a movie by clicking the **Add Keywords** button.
-4. Admin and User roles have different permissions:
-   - **Admin**: Full control.
-   - **User**: Restricted to managing keywords.
+4. Unauthenticated users cannot manage keywords.
 
 ### Credentials
 
-- **Admin**:
-  - Email: `adam@wsei.edu.pl`
-  - Password: `1234abcd!@#$ABCD`
-- **User**:
-  - Email: `damian@wsei.edu.pl`
-  - Password: `abcde1234!@#$ABCD`
+- **Test User**:
+  - Username: `test`
+  - Password: `password`
 
 ---
 
